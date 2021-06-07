@@ -40,7 +40,8 @@ public class Main_F extends JFrame {
         panel = new JPanel();
         fullName = new JLabel(worker.getName());
         Border border = BorderFactory.createLineBorder(Color.BLACK);
-        rowsData = DataBase.getWTasks(worker);
+        worker.setTasks(DataBase.getWTasks(worker));
+        rowsData = worker.getTasks();
         table = new JTable(rowsData, columnNames);
         table.setBorder(border);
         table.setGridColor(Color.BLACK);

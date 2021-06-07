@@ -1,5 +1,6 @@
 package Logic;
 
+
 public class Worker {
 
     private final String login;
@@ -8,6 +9,7 @@ public class Worker {
     private String mobile_phone;
     private String position;
     private int points;
+    private String[][] tasks;
 
     public Worker(String login, String password, String full_name, String mobile_phone, String position, int points) {
         this.login = login;
@@ -20,6 +22,10 @@ public class Worker {
 
     public String getLogin() {
         return this.login;
+    }
+    
+    public String[][] getTasks() {
+        return this.tasks;
     }
 
     public String getPassword() {
@@ -44,6 +50,10 @@ public class Worker {
 
     public void setPassword(String pass) {
         this.password = pass;
+    }
+    
+    public void setTasks(String[][] tasks) {
+        this.tasks = tasks;
     }
 
     public void setName(String name) {
