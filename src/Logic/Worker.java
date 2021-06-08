@@ -10,14 +10,16 @@ public class Worker {
     private String position;
     private int points;
     private String[][] tasks;
+    private int completed_tasks;
 
-    public Worker(String login, String password, String full_name, String mobile_phone, String position, int points) {
+    public Worker(String login, String password, String full_name, String mobile_phone, String position, int points, int completed_tasks) {
         this.login = login;
         this.password = password;
         this.full_name = full_name;
         this.mobile_phone = mobile_phone;
         this.position = position;
         this.points = points;
+        this.completed_tasks = completed_tasks;
     }
 
     public String getLogin() {
@@ -47,6 +49,10 @@ public class Worker {
     public int getPoints() {
         return this.points;
     }
+    
+    public int getComTasks() {
+        return this.completed_tasks;
+    }
 
     public void setPassword(String pass) {
         this.password = pass;
@@ -70,5 +76,9 @@ public class Worker {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+    
+    public void setComTasks(int tasks) {
+        this.completed_tasks = tasks;
     }
 }

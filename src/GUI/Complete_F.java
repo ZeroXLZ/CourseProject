@@ -72,13 +72,14 @@ class completeListener implements ActionListener {
         boolean comp = false;
         for (int i = 0; i < Main_F.table.getRowCount(); i++) {
             if (Main_F.table.getValueAt(i, 0).equals(Complete_F.number.getText())) {
-                
                 if (LocalDate.now().compareTo(LocalDate.parse(Main_F.table.getValueAt(i, 2).toString())) <= 0) {
                     Main_F.worker.setPoints(Main_F.worker.getPoints() + Integer.parseInt(Main_F.table.getValueAt(i, 3).toString()));
+                    Main_F.worker.setComTasks(Main_F.worker.getComTasks()+1);
                 } else {
                     Main_F.worker.setPoints(Main_F.worker.getPoints() - Integer.parseInt(Main_F.table.getValueAt(i, 3).toString()));
+                    Main_F.worker.setComTasks(Main_F.worker.getComTasks()+1);
                 }
-                DataBase.completeTask(Main_F.table.getValueAt(i, 1).toString());          
+                DataBase.completeTask(Main_F.table.getValueAt(i, 1).toString());
                 DataBase.changeWorker(Main_F.worker);
                 comp = true;
                 Main_F.frame.dispose();

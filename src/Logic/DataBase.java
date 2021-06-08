@@ -94,8 +94,8 @@ public class DataBase {
         try {
             connect();
             stat = conn.createStatement();
-            stat.executeUpdate(String.format("UPDATE Staff SET password = '%s', full_name = '%s', mobile_phone = '%s', position = '%s', points = %d WHERE login = '%s'",
-                    worker.getPassword(), worker.getName(), worker.getMobile(), worker.getPosition(), worker.getPoints(), worker.getLogin()));
+            stat.executeUpdate(String.format("UPDATE Staff SET password = '%s', full_name = '%s', mobile_phone = '%s', position = '%s', points = %d, com_tasks = %d WHERE login = '%s'",
+                    worker.getPassword(), worker.getName(), worker.getMobile(), worker.getPosition(), worker.getPoints(), worker.getComTasks(), worker.getLogin()));
             closeDB();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -114,19 +114,19 @@ public class DataBase {
     }
 
     public static Worker getWorker(String login, String password) {
-        String[] info = new String[4];
+        String[] info = new String[5];
         try {
             connect();
             stat = conn.createStatement();
             rs = stat.executeQuery(String.format("SELECT * FROM Staff WHERE login = '%s' and password = '%s'", login, password));
-            for (int i = 3; i < 7; i++) {
+            for (int i = 3; i < 8; i++) {
                 info[i - 3] = rs.getString(i);
             }
             closeDB();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        Worker worker = new Worker(login, password, info[0], info[1], info[2], Integer.parseInt(info[3]));
+        Worker worker = new Worker(login, password, info[0], info[1], info[2], Integer.parseInt(info[3]), Integer.parseInt(info[4]));
         return worker;
     }
 
@@ -201,9 +201,9 @@ public class DataBase {
                 r = rs2.getInt(1);
             }
             rs = stat.executeQuery("SELECT * FROM Staff ORDER BY points DESC");
-            workers = new String[r][6];
+            workers = new String[r][7];
             while (rs.next()) {
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 7; i++) {
                     workers[rs.getRow() - 1][i] = rs.getString(i + 1);
                 }
             }

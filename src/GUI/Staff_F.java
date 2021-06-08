@@ -20,10 +20,10 @@ public class Staff_F extends JFrame {
     protected static JTable table;
     protected static JLabel label;
     protected static JButton add, delete, change, change_points;
-    protected static JTextField log, pass, name, phone, points;
+    protected static JTextField log, pass, name, phone, points, com_tasks;
     protected static JComboBox pos;
     protected static JScrollPane scrollPane;
-    private final static String[] columnNames = {"Login", "Password", "Full name", "Mobile phone", "Position", "Points"};
+    private final static String[] columnNames = {"Login", "Password", "Full name", "Mobile phone", "Position", "Points", "Completed tasks"};
     private static String[][] rowData;
 
     public static void GUI() {
@@ -73,6 +73,8 @@ public class Staff_F extends JFrame {
         new GhostText(phone, "Phone");
         points = new JTextField(4);
         new GhostText(points, "Points");
+        com_tasks = new JTextField();
+        new GhostText(com_tasks, "Number of completed tasks");
 
         ListSelectionModel selModel = table.getSelectionModel();
 
@@ -89,6 +91,8 @@ public class Staff_F extends JFrame {
                 phone.setForeground(Color.black);
                 points.setText(table.getValueAt(selectedRow, 5).toString());
                 points.setForeground(Color.black);
+                com_tasks.setText(table.getValueAt(selectedRow, 6).toString());
+                com_tasks.setForeground(Color.black);
                 for (int i = 0; i < pos.getItemCount(); i++) {
                     pos.setSelectedIndex(i);
                     if (pos.getSelectedItem().toString().equals(table.getValueAt(selectedRow, 4).toString())) {
@@ -116,6 +120,7 @@ public class Staff_F extends JFrame {
                         .addComponent(pos)
                         .addComponent(phone)
                         .addComponent(points)
+                        .addComponent(com_tasks)
                 )
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(label)
@@ -137,6 +142,7 @@ public class Staff_F extends JFrame {
                         .addComponent(pos)
                         .addComponent(phone)
                         .addComponent(points)
+                        .addComponent(com_tasks)
                 )
                 .addGroup(layout.createParallelGroup()
                         .addComponent(label)
@@ -159,13 +165,13 @@ class StaffListener implements ActionListener {
                 if (IsNullOrEmpty.isNullOrEmpty(Staff_F.log, Staff_F.pass, Staff_F.name, Staff_F.phone, Staff_F.points)) {
                     Staff_F.label.setText("Fill in all fields");
                 } else if (Staff_F.log.getText().length() != 10 || Staff_F.pass.getText().length() != 10
-                        || !Staff_F.phone.getText().matches("[-+]?\\d+") || !Staff_F.points.getText().matches("[-+]?\\d+")) {
+                        || !Staff_F.phone.getText().matches("[-+]?\\d+") || !Staff_F.points.getText().matches("[-+]?\\d+") || !Staff_F.com_tasks.getText().matches("[-+]?\\d+")) {
                     Staff_F.label.setText("Incorrect input data");
                 } else if (DataBase.checkWorker(Staff_F.log.getText())) {
                     Staff_F.label.setText("This worker already exists");
                 } else {
                     DataBase.addWorker(new Worker(Staff_F.log.getText(), Staff_F.pass.getText(), Staff_F.name.getText(), Staff_F.phone.getText(),
-                            Staff_F.pos.getSelectedItem().toString(), Integer.parseInt(Staff_F.points.getText())));
+                            Staff_F.pos.getSelectedItem().toString(), Integer.parseInt(Staff_F.points.getText()), Integer.parseInt(Staff_F.com_tasks.getText())));
                     Staff_F.frame.dispose();
                     Staff_F.GUI();
                 }
@@ -174,13 +180,13 @@ class StaffListener implements ActionListener {
                 if (IsNullOrEmpty.isNullOrEmpty(Staff_F.log, Staff_F.pass, Staff_F.name, Staff_F.phone, Staff_F.points)) {
                     Staff_F.label.setText("Fill in all fields");
                 } else if (Staff_F.log.getText().length() != 10 || Staff_F.pass.getText().length() != 10
-                        || !Staff_F.phone.getText().matches("[-+]?\\d+") || !Staff_F.points.getText().matches("[-+]?\\d+")) {
+                        || !Staff_F.phone.getText().matches("[-+]?\\d+") || !Staff_F.points.getText().matches("[-+]?\\d+") || !Staff_F.com_tasks.getText().matches("[-+]?\\d+")) {
                     Staff_F.label.setText("Incorrect input data");
                 } else if (!DataBase.checkWorker(Staff_F.log.getText())) {
                     Staff_F.label.setText("This worker not exists");
                 } else {
                     DataBase.changeWorker(new Worker(Staff_F.log.getText(), Staff_F.pass.getText(), Staff_F.name.getText(), Staff_F.phone.getText(),
-                            Staff_F.pos.getSelectedItem().toString(), Integer.parseInt(Staff_F.points.getText())));
+                            Staff_F.pos.getSelectedItem().toString(), Integer.parseInt(Staff_F.points.getText()), Integer.parseInt(Staff_F.com_tasks.getText())));
                     Staff_F.frame.dispose();
                     Staff_F.GUI();
                 }

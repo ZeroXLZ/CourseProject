@@ -5,6 +5,8 @@ import Logic.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -98,11 +100,15 @@ public class Main_F extends JFrame {
         positions.addActionListener(listener);
         JMenuItem tasks = new JMenuItem("Tasks");
         tasks.addActionListener(listener);
+        JMenuItem delays = new JMenuItem("Get delays");
+        delays.addActionListener(listener);
         admin.add(staff);
         admin.addSeparator();
         admin.add(positions);
         admin.addSeparator();
         admin.add(tasks);
+        admin.addSeparator();
+        admin.add(delays);
         return admin;
     }
 }
@@ -133,6 +139,20 @@ class mainListener implements ActionListener {
             case "Update table":
                 Main_F.frame.dispose();
                 Main_F.GUI();
+                break;
+            case "Get delays":
+                String[][] data = DataBase.getTasks();
+                ArrayList<String[]> useful_data = new ArrayList();
+                for (int i = 0; i < data.length; i++) {
+                    if (LocalDate.now().compareTo(LocalDate.parse(data[i][4])) > 0) {
+                        String[] temp = new String[3];
+                        temp[0] = data[i][3];
+                        temp[1] = data[i][1];
+                        temp[2] = data[i][4];
+                        useful_data.add(temp);
+                    }
+                }
+                AdditionalP.ExcelWorker.Export("Delays", "Delays_list.xls", new String[]{"Full name", "Task", "Deadline", LocalDate.now().toString()}, useful_data);
                 break;
         }
     }
