@@ -152,7 +152,9 @@ class mainListener implements ActionListener {
                         useful_data.add(temp);
                     }
                 }
-                AdditionalP.ExcelWorker.Export("Delays", "Delays_list.xls", new String[]{"Full name", "Task", "Deadline", LocalDate.now().toString()}, useful_data);
+                AdditionalP.ExcelWorker.Export("Delays", "Delays_list_" + LocalDate.now().toString() + ".xls", new String[]{"Full name", "Task", "Deadline"}, useful_data);
+                break;
+            default:
                 break;
         }
     }

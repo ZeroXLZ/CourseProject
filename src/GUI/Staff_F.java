@@ -8,6 +8,8 @@ import Logic.Worker;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
@@ -19,8 +21,8 @@ public class Staff_F extends JFrame {
     private static JPanel panel;
     protected static JTable table;
     protected static JLabel label;
-    protected static JButton add, delete, change, change_points;
-    protected static JTextField log, pass, name, phone, points, com_tasks;
+    protected static JButton add, delete, change, change_points, export;
+    protected static JTextField log, pass, name, phone, points, com_tasks, exp_num;
     protected static JComboBox pos;
     protected static JScrollPane scrollPane;
     private final static String[] columnNames = {"Login", "Password", "Full name", "Mobile phone", "Position", "Points", "Completed tasks"};
@@ -60,6 +62,8 @@ public class Staff_F extends JFrame {
         delete.addActionListener(listener);
         change_points = new JButton("Change points");
         change_points.addActionListener(listener);
+        export = new JButton("Export most useful");
+        export.addActionListener(listener);
 
         log = new JTextField(10);
         new GhostText(log, "Login (10 ch.)");
@@ -75,6 +79,8 @@ public class Staff_F extends JFrame {
         new GhostText(points, "Points");
         com_tasks = new JTextField();
         new GhostText(com_tasks, "Number of completed tasks");
+        exp_num = new JTextField();
+        new GhostText(exp_num, "Number of employee to export");
 
         ListSelectionModel selModel = table.getSelectionModel();
 
@@ -121,6 +127,7 @@ public class Staff_F extends JFrame {
                         .addComponent(phone)
                         .addComponent(points)
                         .addComponent(com_tasks)
+                        .addComponent(exp_num)
                 )
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(label)
@@ -130,6 +137,7 @@ public class Staff_F extends JFrame {
                         .addComponent(change)
                         .addComponent(delete)
                         .addComponent(change_points)
+                        .addComponent(export)
                 )
         );
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -143,6 +151,7 @@ public class Staff_F extends JFrame {
                         .addComponent(phone)
                         .addComponent(points)
                         .addComponent(com_tasks)
+                        .addComponent(exp_num)
                 )
                 .addGroup(layout.createParallelGroup()
                         .addComponent(label)
@@ -152,8 +161,13 @@ public class Staff_F extends JFrame {
                         .addComponent(change)
                         .addComponent(delete)
                         .addComponent(change_points)
+                        .addComponent(export)
                 )
         );
+    }
+
+    protected static String[][] getData() {
+        return rowData;
     }
 }
 
@@ -203,10 +217,30 @@ class StaffListener implements ActionListener {
                 }
                 break;
             case "Change points":
-                if (!IsNullOrEmpty.isNullOrEmpty(Staff_F.points)) {
+                if (!IsNullOrEmpty.isNullOrEmpty(Staff_F.points) && Staff_F.points.getText().matches("[-+]?\\d+")) {
                     DataBase.changePoints(Integer.parseInt(Staff_F.points.getText()));
                     Staff_F.frame.dispose();
                     Staff_F.GUI();
+                } else {
+                    Staff_F.label.setText("Incorrect points number");
+                }
+                break;
+            case "Export most useful":
+                String[][] data = Staff_F.getData();
+                if (!IsNullOrEmpty.isNullOrEmpty(Staff_F.exp_num) && Staff_F.exp_num.getText().matches("[+]?\\d+") && Integer.parseInt(Staff_F.exp_num.getText()) <= data.length) {
+                    ArrayList<String[]> useful_data = new ArrayList();
+                    for (int i = 0; i < Integer.parseInt(Staff_F.exp_num.getText()); i++) {
+                        String[] temp = new String[4];
+                        temp[0] = data[i][2];
+                        temp[1] = data[i][4];
+                        temp[2] = data[i][5];
+                        temp[3] = data[i][6];
+                        useful_data.add(temp);
+                    }
+                    AdditionalP.ExcelWorker.Export("The best staff", "Top_staff_" + LocalDate.now().toString() + ".xls",
+                            new String[]{"Full name", "Position", "Points", "Completed tasks"}, useful_data);
+                } else {
+                    Staff_F.label.setText("Incorrect staff number");
                 }
                 break;
             default:
