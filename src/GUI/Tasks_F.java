@@ -91,7 +91,7 @@ public class Tasks_F extends JFrame {
                 points.setForeground(Color.black);
                 for (int i = 0; i < completement.getItemCount(); i++) {
                     completement.setSelectedIndex(i);
-                    if (completement.getSelectedItem().toString().equals(table.getValueAt(selectedRow, 2).toString())) {
+                    if (completement.getSelectedItem().toString().equals(table.getValueAt(selectedRow, 6).toString())) {
                         break;
                     }
                 }

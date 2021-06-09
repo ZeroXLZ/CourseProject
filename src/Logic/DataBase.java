@@ -29,9 +29,9 @@ public class DataBase {
         try {
             connect();
             stat = conn.createStatement();
-            stat.executeUpdate(String.format("INSERT INTO Staff (login, password, full_name, mobile_phone, position, points) "
-                    + "VALUES ('%s', '%s', '%s', '%s', '%s', '%d')",
-                    worker.getLogin(), worker.getPassword(), worker.getName(), worker.getMobile(), worker.getPosition(), worker.getPoints()));
+            stat.executeUpdate(String.format("INSERT INTO Staff (login, password, full_name, mobile_phone, position, points, com_tasks) "
+                    + "VALUES ('%s', '%s', '%s', '%s', '%s', %d, %d)",
+                    worker.getLogin(), worker.getPassword(), worker.getName(), worker.getMobile(), worker.getPosition(), worker.getPoints(), worker.getComTasks()));
             closeDB();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -364,7 +364,7 @@ public class DataBase {
             stat = conn.createStatement();
             rs = stat.executeQuery("SELECT task, completed FROM Tasks");
             while (rs.next()) {
-                if (rs.getString("task").equals(task) && rs.getString(1).equals("1")) {
+                if (rs.getString(1).equals(task) && rs.getString(2).equals("0")) {
                     check = true;
                     break;
                 }

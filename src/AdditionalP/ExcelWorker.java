@@ -36,7 +36,7 @@ public class ExcelWorker {
         for (int i = 0; i < row.getPhysicalNumberOfCells(); i++) {
             row.getCell(i).setCellStyle(style);
         }
-        String file_way = "D:\\Systemf\\Desktop\\test\\" + file;
+        String file_way = System.getProperty("user.home") + "\\Desktop\\" + file;
         try ( FileOutputStream out = new FileOutputStream(new File(file_way))) {
             workbook.write(out);
         } catch (IOException e) {
